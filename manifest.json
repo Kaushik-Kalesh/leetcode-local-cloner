@@ -3,14 +3,16 @@
     "name": "Leetcode Local Cloner",
     "description": "Extension to clone Leetcode questions in the local file system",
     "version": "1.0",
-    "permissions": [
-        "activeTab"
-    ],
+    "permissions": ["activeTab", "tabs"],
     "action": {
-        "default_popup": "public/index.html"   
+      "default_popup": "public/index.html"
     },
     "background": {
-        "service_worker": "background/cloner.js",
-        "type": "module"
+      "service_worker": "cloner.js",
+      "type": "module"
+    },
+    "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self';"
     }
   }
+  
