@@ -5,87 +5,55 @@ async function getCurrentTabUrl() {
 }
 
 async function getData() {
-  var resData = {}
+  const PROXY_URL = "http://localhost:3000";
+  let lcQuestionURL = await getCurrentTabUrl();  
+  let lcQuestionURLSplit = lcQuestionURL.slice(0, -1).split('/')
 
-  // TODO: Use jQuery to fix CORS block from client side
-  const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
-  const LEETCODE_GRAPHQL_API_ENDPOINT = 'https://leetcode.com/graphql';
-  var lcQuestionURL = await getCurrentTabUrl();  
-  var lcQuestionTitle = lcQuestionURL.slice(0, -1).split('/').pop()
+  if(lcQuestionURLSplit[2] !== 'leetcode.com') { return null; }
 
-  const GET_QUESTION_CONTENT_QUERY = {
-    query: `query questionContent($titleSlug: String!) {
-              question(titleSlug: $titleSlug) {
-                content
-              }
-            }`,
-    variables: {"titleSlug": lcQuestionTitle},
-    operationName: "questionContent"
+  if(lcQuestionURLSplit[lcQuestionURLSplit.length - 1] === 'description') {
+    lcQuestionURLSplit.pop();
   }
-  const GET_EXAMPLE_TESTCASES_QUERY = {
-    query: `query consolePanelConfig($titleSlug: String!) {
-              question(titleSlug: $titleSlug) {
-                exampleTestcaseList
-              }	
-            }`,
-    variables: {"titleSlug": lcQuestionTitle},
-    operationName: "consolePanelConfig"
-  }
-  const GET_CODE_SNIPPETS_QUERY = {
-    query: `query questionEditorData($titleSlug: String!) {
-              question(titleSlug: $titleSlug) {
-                codeSnippets {
-                  lang
-                  code    
-                } 
-              }
-    }`,
-    variables: {"titleSlug": lcQuestionTitle},
-    operationName: "questionEditorData"
-  }
+  let lcQuestionTitle = lcQuestionURLSplit.pop();
 
+  const resData = {};
   try {
-    const [questionContentRes, exampleTestcasesRes, codeSnippetsRes] = await Promise.all([
-      fetch(PROXY_URL + LEETCODE_GRAPHQL_API_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(GET_QUESTION_CONTENT_QUERY)
-      }),
-      fetch(PROXY_URL + LEETCODE_GRAPHQL_API_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(GET_EXAMPLE_TESTCASES_QUERY)
-      }),
-      fetch(PROXY_URL + LEETCODE_GRAPHQL_API_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(GET_CODE_SNIPPETS_QUERY)
+    // const [questionContentRes, exampleTestcasesRes, codeSnippetsRes] = await Promise.all([
+    //   fetch(PROXY_URL + "/content/" + lcQuestionTitle),
+    //   fetch(PROXY_URL + "/testcases/" + lcQuestionTitle),
+    //   fetch(PROXY_URL + "/code-snippets/" + lcQuestionTitle),
+    // ]);
+    
+    // const questionContentData = await questionContentRes.json();
+    // const exampleTestcasesData = await exampleTestcasesRes.json();
+    // const codeSnippetsData = await codeSnippetsRes.json();
+
+    fetch(PROXY_URL + "/content/" + lcQuestionTitle)
+      .then(res => res.json())
+      .then(data => {
+        resData.questionContent = data.data.question.content;
       })
-    ]);
 
-    const resData = {};
 
-    const questionContentData = await questionContentRes.json();
-    resData.questionContent = questionContentData.data.question.content;
+    fetch(PROXY_URL + "/testcases/" + lcQuestionTitle)
+      .then(res => res.json())
+      .then(data => {
+        resData.testcases = [];
+        data.data.question.exampleTestcaseList.forEach(e => {
+          let [inp, out] = e.split('\n');
+          resData.testcases.push({ input: inp, expected_output: out });
+        });
+      })
 
-    const exampleTestcasesData = await exampleTestcasesRes.json();
-    resData.testcases = [];
-    exampleTestcasesData.data.question.exampleTestcaseList.forEach(e => {
-      let [inp, out] = e.split('\n');
-      resData.testcases.push({ input: inp, expected_output: out });
-    });
 
-    const codeSnippetsData = await codeSnippetsRes.json();
-    resData.langs = {};
-    codeSnippetsData.data.question.codeSnippets.forEach(e => {
-      resData.langs[e.lang] = e.code;
-    });
+    fetch(PROXY_URL + "/code-snippets/" + lcQuestionTitle)
+    .then(res => res.json())
+    .then(data => {
+      resData.langs = {};
+      data.data.question.codeSnippets.forEach(e => {
+        resData.langs[e.lang] = e.code;
+      });
+    })
 
     return resData;
   } catch (err) {
@@ -107,8 +75,7 @@ async function RemoveClonedFiles() {
 // Connect with frontend
 async function listenForMessages() {
   await chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-      if (message.action === 'startClone') {
-        console.log("CLONE!");
+      if (message.action === 'startClone') {        
         await StartCloning();
       }
       else if (message.action == 'removeFiles') {
