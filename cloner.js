@@ -25,11 +25,12 @@ async function getData() {
     langs: {},
   };
   try {
-    const [questionContentRes, exampleTestcaseRes, codeSnippetsRes] = await Promise.all([
-      fetch(PROXY_URL + "/content/" + lcQuestionTitle),
-      fetch(PROXY_URL + "/testcases/" + lcQuestionTitle),
-      fetch(PROXY_URL + "/code-snippets/" + lcQuestionTitle),
-    ]);
+    const [questionContentRes, exampleTestcaseRes, codeSnippetsRes] =
+      await Promise.all([
+        fetch(PROXY_URL + "/content/" + lcQuestionTitle),
+        fetch(PROXY_URL + "/testcases/" + lcQuestionTitle),
+        fetch(PROXY_URL + "/code-snippets/" + lcQuestionTitle),
+      ]);
 
     const questionContentData = await questionContentRes.json();
     resData.questionContent = questionContentData.data.question.content;
@@ -40,7 +41,6 @@ async function getData() {
       resData.testcases.push({ input: inp, expected_output: out });
     });
 
-    
     const codeSnippetsData = await codeSnippetsRes.json();
     codeSnippetsData.data.question.codeSnippets.forEach((e) => {
       resData.langs[e.lang] = e.code;
@@ -60,7 +60,7 @@ async function StartCloning() {
     clients.forEach((client) => {
       client.postMessage({
         message: "Download Zip",
-        ...data
+        ...data,
       });
     });
   });
