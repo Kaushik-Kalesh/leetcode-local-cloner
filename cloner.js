@@ -9,14 +9,11 @@ async function getData() {
   let lcQuestionURL = await getCurrentTabUrl();
   let lcQuestionURLSplit = lcQuestionURL.slice(0, -1).split("/");
 
-  if (lcQuestionURLSplit[2] !== "leetcode.com") {
+  if (!lcQuestionURL.startsWith('https://leetcode.com/problems/')) {
     return null;
   }
 
-  if (lcQuestionURLSplit[lcQuestionURLSplit.length - 1] === "description") {
-    lcQuestionURLSplit.pop();
-  }
-  let lcQuestionTitle = lcQuestionURLSplit.pop();
+  let lcQuestionTitle = lcQuestionURLSplit[4];
 
   const resData = {
     title: lcQuestionTitle,
@@ -37,8 +34,7 @@ async function getData() {
 
     const exampleTestcaseData = await exampleTestcaseRes.json();
     exampleTestcaseData.data.question.exampleTestcaseList.forEach((e) => {
-      let [inp, out] = e.split("\n");
-      resData.testcases.push({ input: inp, expected_output: out });
+      resData.testcases.push(e.replace('\n', ','));
     });
 
     const codeSnippetsData = await codeSnippetsRes.json();
@@ -55,6 +51,7 @@ async function getData() {
 
 async function StartCloning() {
   const data = await getData();
+  if(data == null) { return; }
 
   self.clients.matchAll().then((clients) => {
     clients.forEach((client) => {
