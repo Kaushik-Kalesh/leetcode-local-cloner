@@ -29,7 +29,9 @@ expected_outputs = []
 with open('question.txt', 'r') as f:
     for line in f.readlines():
         if line.startswith('Output:'):
-            expected_outputs.append(line.strip('Output:').strip())
+            expected_output = line.strip('Output:').strip()
+            if expected_output in ('true', 'false'): expected_output = expected_output.capitalize()
+            expected_outputs.append(expected_output)
 
 method_name = [method for method in dir(Solution) if callable(
     getattr(Solution, method)) and not method.startswith("__")][0]
