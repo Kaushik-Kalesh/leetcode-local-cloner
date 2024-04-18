@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Leetcode Local Cloner",
-  "description": "Extension to clone Leetcode questions in the local file system",
+  "description": "A Chrome Extension for working on Leetcode problems in your local system on your favourite text editor",
   "version": "1.0",
   "permissions": ["activeTab", "tabs", "storage"],
   "action": {
