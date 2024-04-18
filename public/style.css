@@ -32,11 +32,11 @@ body {
     background-color: #8d99ae;
     
 }
-.removeButton{
+.donateButton{
     border:#495057;
     height: 50px;
     width: 100px;
     border-radius: 20px;
-    background-color: #d62828;
+    background-color: rgb(54, 150, 54);
 
 }

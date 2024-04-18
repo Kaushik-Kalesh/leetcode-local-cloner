@@ -49,7 +49,7 @@ async function getData() {
   }
 }
 
-async function StartCloning() {
+async function startCloning() {
   const data = await getData();
   if(data == null) { return; }
 
@@ -63,8 +63,8 @@ async function StartCloning() {
   });
 }
 
-async function RemoveClonedFiles() {
-  //TODO: Remove the created files
+async function processDonation() {
+  //TODO: Process Donations
 }
 
 // Connect with frontend
@@ -72,9 +72,9 @@ async function listenForMessages() {
   await chrome.runtime.onMessage.addListener(
     async (message, sender, sendResponse) => {
       if (message.action === "startClone") {
-        await StartCloning();
-      } else if (message.action === "removeFiles") {
-        await RemoveClonedFiles();
+        await startCloning();
+      } else if (message.action === "donate") {
+        await processDonation();
       } else if (message.action === "Debug") {
         console.log(message.log);
       } else if (message.action === "Error") {
