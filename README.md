@@ -2,6 +2,8 @@
 
 A Chrome Extension for working on [Leetcode](leetcode.com) problems in your local system on your favourite text editor offering a WHOLE lot more features Leetcode's default editor doesn't offer.  
 
+![alt text](image.png)
+
 ### Supported Browsers
 - Google Chrome 
 - Brave

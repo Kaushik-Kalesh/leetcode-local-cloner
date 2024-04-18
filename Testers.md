@@ -14,6 +14,6 @@ Follow this step-by-step guide to test the extension:
 
 *Step 6*: Open `solution.py` to write your Leetcode solution, and run `python test.py` to test your solution with the example test cases
 
-*Step 7 [optional]*:  Add custom testcases to `testcases.txt` if you want
+*Step 7 [optional]*:  Add custom testcases to `testcases.txt`, and view the question in `question.txt`
 
 *Step 8*: That's it, enjoy working on Leetcode problems, along with the comfort of your favourite text editor 💖 
