@@ -21,9 +21,37 @@ function html2text(html) {
 
 function downloadZIP(data) {
   try {
+    const TESTING_PY_SCRIPT = `from solution import Solution
+
+sol = Solution()
+
+expected_outputs = []
+with open('question.txt', 'r') as f:
+    for line in f.readlines():
+        if line.startswith('Output:'):
+            expected_outputs.append(line.strip('Output:').strip())
+
+method_name = [method for method in dir(Solution) if callable(
+    getattr(Solution, method)) and not method.startswith("__")][0]
+
+with open('testcases.txt', 'r') as f:
+    for i, line in enumerate(f.readlines()):
+        print(f'Testcase {i + 1}')
+        line = line.rstrip('\\n')
+
+        print(f'Input: {line}')
+        print(f'Expected Output: {expected_outputs[i]}')
+        output = eval(f"str(sol.{method_name}({line}))")
+        print(f'Output: {output}')
+
+        status = ('FAILED', 'PASSED')[eval(output) == eval(expected_outputs[i])]
+        print(f'Status: {status}\\n')`;
+
     const files = [
       { name: "question.txt", content: html2text(data.questionContent) },
-      { name: "solution.c", content: data.langs.C },
+      { name: "solution.py", content: data.langs.Python3 },
+      { name: "testcases.txt", content: data.testcases.join("\n") },
+      { name: "test.py", content: TESTING_PY_SCRIPT },
     ];
 
     const zip = new JSZip();
