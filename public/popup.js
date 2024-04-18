@@ -7,20 +7,25 @@ document.getElementById("removeButton").addEventListener("click", () => {
 });
 
 function debug(msg) {
-    chrome.runtime.sendMessage({ action: "Debug", log: msg });        
+  chrome.runtime.sendMessage({ action: "Debug", log: msg });
 }
 function error(err) {
-    chrome.runtime.sendMessage({ action: "Error", error: err.message });        
+  chrome.runtime.sendMessage({ action: "Error", error: err.message });
 }
 
+function html2text(html) {
+  var tag = document.createElement("div");
+  tag.innerHTML = html;
+  return tag.innerText;
+}
 
 navigator.serviceWorker.addEventListener("message", (event) => {
   if (event.data.message === "Download Zip") {
     try {
       const data = event.data;
       const files = [
-        { name: "question.txt", content: data.questionContent },
-        { name: "solution.c", content: data.langs.C }
+        { name: "question.txt", content: html2text(data.questionContent) },
+        { name: "solution.c", content: data.langs.C },
       ];
 
       const zip = new JSZip();
