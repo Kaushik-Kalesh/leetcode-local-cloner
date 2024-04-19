@@ -12,11 +12,12 @@ A Chrome Extension for working on [Leetcode](leetcode.com) problems in your loca
 - Microsoft Edge
 - Vivaldi
 
-### Pluses:
+### Features:
 - *Autocomplete* ✅
 - *Intellisense* 🤓
 - *Debugger* 🪲
 - *Syntax Highlighting* 🌈
+- *Faster Testing* ⏲️
 
 ### Limitations: 
 - Only Python3 is supported 
