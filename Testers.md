@@ -18,7 +18,7 @@ Follow this step-by-step guide to test the extension:
 
 **Step 8** *[optional]*:  Add custom testcases to `testcases.txt`, and view the question in `question.txt`
 
-**Step 9**: That's it, enjoy working on Leetcode problems, along with the comfort of your favourite text editor 💖 
+**Step 9**: Copy and Paste your solution in Leetcode, and submit it. That's it, enjoy working on Leetcode problems, along with the comfort of your favourite text editor 💖 
 
 Feel free to reach out to me if you find a bug or a missing feature, through:
 - **WhatsApp** *(+91 93635 91277)*
