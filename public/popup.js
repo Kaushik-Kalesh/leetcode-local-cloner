@@ -49,9 +49,17 @@ with open('testcases.txt', 'r') as f:
         status = ('FAILED', 'PASSED')[eval(output) == eval(expected_outputs[i])]
         print(f'Status: {status}\\n')`;
 
+    const SOLUTION_PY_CMT = `'''
+    Ensure your helper methods are private, i.e their name starts with __ (for example: def __helper(self):
+'''\n`;
+
     const files = [
       { name: "question.txt", content: html2text(data.questionContent) },
-      { name: "solution.py", content: data.langs.Python3 },
+      {
+        name: "solution.py",
+        content:
+          SOLUTION_PY_CMT + data.langs.Python3.replaceAll("List[", "list["),
+      },
       { name: "testcases.txt", content: data.testcases.join("\n") },
       { name: "test.py", content: TESTING_PY_SCRIPT },
     ];
