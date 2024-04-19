@@ -8,7 +8,7 @@ Follow this step-by-step guide to test the extension:
 
 **Step 3**: Turn on *Developer mode*, and click on *Load Unpacked* option, and choose the `leetcode-local-cloner` directory
 
-**Step 4**: Go to any Leetcode problem (https://leetcode.com/problems/*), click on the extensions button in the browser, and click the clone button in the extension pop-up
+**Step 4**: Go to any Leetcode problem (https://leetcode.com/problemset/), click on the extensions button in the browser, and click the clone button in the extension pop-up
 
 **Step 5**: Download and extract the zip file from the prompt to a directory, and open the directory with your preferred code editor 
 
