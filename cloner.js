@@ -5,7 +5,7 @@ async function getCurrentTabUrl() {
 }
 
 async function getData() {
-  const PROXY_URL = "http://localhost:3000";
+  const PROXY_URL = "https://llc-proxy.onrender.com";
   let lcQuestionURL = await getCurrentTabUrl();
   let lcQuestionURLSplit = lcQuestionURL.slice(0, -1).split("/");
 
