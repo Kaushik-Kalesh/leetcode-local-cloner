@@ -2,9 +2,9 @@ document.getElementById("cloneButton").addEventListener("click", () => {
   chrome.runtime.sendMessage({ action: "startClone" });
 });
 
-document.getElementById("donateButton").addEventListener("click", () => {
-  chrome.runtime.sendMessage({ action: "donate" });
-});
+// document.getElementById("donateButton").addEventListener("click", () => {
+//   chrome.runtime.sendMessage({ action: "donate" });
+// });
 
 function debug(msg) {
   chrome.runtime.sendMessage({ action: "Debug", log: msg });
